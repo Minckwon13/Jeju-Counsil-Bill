@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "id": "init_test",
+        "date": "2026-09-14",
+        "proposer": "시스템 안내",
+        "title": "제주도의회 의안 자동 수집 시스템이 정상 연결되었습니다.",
+        "summary": "1. 서버 연결 및 자동화 파이프라인 작동 완료\n2. 신규 발의 의안 감지 시 자동으로 업데이트됩니다.\n3. 상단 링크를 눌러 의회 홈페이지를 바로 확인할 수 있습니다.",
+        "link": "https://www.council.jeju.kr/activity/bill/info/13dae.do"
+    }
+]
