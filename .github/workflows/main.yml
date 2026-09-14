@@ -1,0 +1,41 @@
+name: Update Council Data
+
+on:
+  schedule:
+    # 매일 한국 시간 오후 6시 (UTC 오전 9시)에 실행
+    - cron: '0 9 * * *' 
+  workflow_dispatch: # 버튼을 눌러 수동으로 실행할 수 있게 함
+
+permissions:
+  contents: write # 봇이 코드를 덮어쓸 수 있도록 쓰기 권한 부여
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 파이썬 설정
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 필요 패키지 설치
+        run: |
+          pip install -r requirements.txt
+
+      - name: 크롤링 및 업데이트 스크립트 실행
+        # 만약 API 키가 필요하다면 아래처럼 Secrets에 등록 후 사용합니다.
+        # env:
+        #   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
+
+      - name: 변경된 data.json 파일을 GitHub에 커밋(저장)
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add data.json
+          # 변경사항이 있을 때만 커밋
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update council bills data" && git push)
