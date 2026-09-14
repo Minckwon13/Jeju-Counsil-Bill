@@ -1,0 +1,14 @@
+# 웹 크롤링을 위한 HTTP 통신 라이브러리
+requests
+
+# 웹페이지 HTML 파싱 라이브러리 (제주도의회 게시판 수집용)
+beautifulsoup4
+
+# 구글 Gemini AI API 라이브러리 (의안 본문 3줄 요약용)
+google-generativeai
+
+# PDF 파일에서 텍스트를 추출하기 위한 라이브러리 (첨부파일 분석용)
+pdfplumber
+
+# HWP(한글) 파일 구조 분석 및 텍스트 추출을 위한 라이브러리 (지자체 한글 파일 처리용)
+olefile
