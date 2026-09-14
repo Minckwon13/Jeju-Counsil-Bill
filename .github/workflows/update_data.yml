@@ -1,0 +1,45 @@
+name: Update Council Data
+
+on:
+  schedule:
+    - cron: '0 9 * * *' 
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 필요 패키지 설치
+        run: |
+          pip install -r requirements.txt
+
+      - name: 크롤링 및 업데이트 스크립트 실행
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
+
+      - name: 변경된 data.json 파일을 GitHub에 커밋
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          
+          # data.json 파일이 존재하는지 확인 후 커밋 진행
+          if [ -f data.json ]; then
+            git add data.json
+            git commit -m "Auto-update council bills data" || echo "No changes to commit"
+            git push
+          else
+            echo "⚠️ data.json 파일이 생성되지 않았습니다."
+          fi
