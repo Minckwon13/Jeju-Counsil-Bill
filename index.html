@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제주도의회 의안 자동 요약</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .tag { display: inline-block; background: #007bff; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; margin-bottom: 10px; }
+        .summary { background: #f8f9fa; padding: 15px; border-left: 4px solid #28a745; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🏛️ 제주도의회 최신 의안 요약</h1>
+        <p>매일 자동으로 업데이트 됩니다.</p>
+    </div>
+
+    <!-- 데이터가 들어갈 공간 -->
+    <div id="bill-container">로딩 중...</div>
+
+    <script>
+        // 파이썬이 생성한 data.json 파일을 불러옵니다.
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('bill-container');
+                container.innerHTML = ''; // 로딩 텍스트 지우기
+                
+                // 데이터를 최신순(역순)으로 화면에 그립니다.
+                data.reverse().forEach(bill => {
+                    const card = `
+                        <div class="card">
+                            <span class="tag">${bill.date} | ${bill.proposer}</span>
+                            <h3>${bill.title}</h3>
+                            <div class="summary">
+                                <strong>💡 AI 3줄 요약:</strong><br>
+                                ${bill.summary.replace(/\n/g, '<br>')}
+                            </div>
+                            <p style="margin-top: 15px; font-size: 14px;">
+                                <a href="${bill.link}" target="_blank">🔗 원문 보러가기</a>
+                            </p>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            })
+            .catch(error => {
+                document.getElementById('bill-container').innerHTML = "데이터를 불러오는 데 실패했습니다.";
+            });
+    </script>
+</body>
+</html>
